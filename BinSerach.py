@@ -50,7 +50,7 @@ from os import system as sys
 sys("clear")
 print("Enter space seperated values for an array:")
 MyArr = list(map(int,input().split(" ")))
-key = int(input("Enter the key to find in the array: "))
+key = int(input("Enter the element to find in the array: "))
 MySorter(MyArr)
 if BinS(MyArr,key):
     print("{0} was found in the array".format(key))
