@@ -8,10 +8,12 @@ def WillAlive(Location, PosOccupied,Min=2):
         (Location[0]+1,Location[1]-1),(Location[0]+1,Location[1]),(Location[0]+1,Location[1]+1)
         ]
     NumNeigh = 0
+
     for Neighbour in NeighBors:
-        if (Neighbour[0] > 0 and Neighbour[1]>0):
-            if Neighbour in PosOccupied:
-                NumNeigh += 1
+        if Neighbour in PosOccupied:
+            NumNeigh += 1
+            if NumNeigh > 3:
+                break
     if NumNeigh >= Min and NumNeigh <= 3:
         return True
     else:
@@ -26,12 +28,12 @@ def NeighbourAlive(Location,CurrentPosition,CurrentStack):
     '''
     
     AliveNeighbors = [
-        (Location[0]-1,Location[1]),
+        (Location[0]-1,Location[1]-1),(Location[0]-1,Location[1]),(Location[0]-1,Location[1]+1),
         (Location[0],Location[1]-1),(Location[0],Location[1]+1),
-        (Location[0]+1,Location[1])
+        (Location[0]+1,Location[1]-1),(Location[0]+1,Location[1]),(Location[0]+1,Location[1]+1)
     ]
     for Nbr in AliveNeighbors:
-        if(Nbr[0] > 0 and Nbr[1]>0 and Nbr not in CurrentPosition):
+        if(Nbr not in CurrentPosition):
             if(WillAlive(Nbr,CurrentPosition,3)):
                 CurrentStack.add(Nbr)
     return CurrentStack
