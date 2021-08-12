@@ -133,3 +133,6 @@ dmypy.json
 
 # Go Binaried
 bin/
+#  Stuff I don't want up
+.txt
+.log
