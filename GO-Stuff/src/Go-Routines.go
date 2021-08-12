@@ -31,32 +31,40 @@ func f2(wg *sync.WaitGroup) {
 func main() {
 
 	var wg sync.WaitGroup
-	
 
 	fmt.Println("Main thread executing")
 	fmt.Println("OS: ", runtime.GOOS)
 	fmt.Println("Number of CPUS: ", runtime.NumCPU())
 	fmt.Println("Arch ", runtime.GOARCH)
 
-	wg.Add(200)
+	
 	var n = 0
-	for i := 0; i<100; i++ {
+
+	var m sync.Mutex
+	for i := 0; i < 100; i++ {
+		wg.Add(2)
 		go func() {
+			m.Lock()
 			n++
-			time.Sleep(time.Second/10)
-			wg.Done()
-			
+			m.Unlock()
+			time.Sleep(time.Second / 10)
+			defer wg.Done()
+
 		}()
-		go func () {
+		go func() {
+			m.Lock()
 			n--
-			time.Sleep(time.Second/10)
-			wg.Done()
-			
+			m.Unlock()
+
+			time.Sleep(time.Second / 10)
+			defer wg.Done()
+
 		}()
 	}
 
-	defer fmt.Println("N =",n)
-	defer wg.Wait()
+	defer fmt.Println("N =", n)
+
+	wg.Wait()
 
 	fmt.Println("Go max processes: ", runtime.GOMAXPROCS(0))
 
